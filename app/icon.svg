@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>CG — Carl Griff</title>
+  <rect width="64" height="64" rx="12" fill="#121417"/>
+  <rect x="2" y="2" width="60" height="60" rx="10" fill="none" stroke="#b8860b" stroke-width="2"/>
+  <g fill="none" stroke="#f4ecd8" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M26 21C22 17 12 18 12 27V37C12 46 22 47 26 43"/>
+    <path d="M51 21C47 17 36 18 36 27V37C36 46 46 47 51 42V33H45"/>
+  </g>
+</svg>
