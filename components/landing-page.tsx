@@ -1,12 +1,14 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   ArrowDown,
   ArrowUpRight,
   BookOpen,
   Check,
+  ChevronDown,
   Cog,
   Compass,
   Download,
@@ -22,10 +24,27 @@ import {
   Shield,
   UserRound,
   Wrench,
+  X,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+function scrollToBek() {
+  const target = document.getElementById("bek-content");
+  if (!target) return;
+  const desktop = window.matchMedia("(min-width: 1024px)").matches;
+  const bounds = target.getBoundingClientRect();
+  // Center the content rather than the section's decorative padding.
+  // On short desktop windows, keep the bottom action in view.
+  const offset = desktop
+    ? Math.min((window.innerHeight - bounds.height) / 2, window.innerHeight - bounds.height - 24)
+    : 20;
+  window.scrollTo({
+    top: window.scrollY + bounds.top - offset,
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+  });
+}
 
 const reveal = {
   initial: { opacity: 0, y: 28 },
@@ -73,7 +92,7 @@ const requisitions = [
   },
   {
     icon: ImageIcon,
-    title: "High-Res WW1-Tech Art",
+    title: "Wallpaper and Illustrations",
     detail: "Wallpapers and concept sketches",
   },
   {
@@ -94,57 +113,19 @@ function Rivets() {
   );
 }
 
-function GaugeDial({ value, label }: { value: string; label: string }) {
+function HeroPortrait() {
   return (
-    <div className="gauge-dial">
-      <div className="gauge-face">
-        <span className="gauge-needle" />
-        <span className="gauge-value">{value}</span>
-      </div>
-      <span className="mt-3 font-mono text-[8px] uppercase tracking-[0.22em] text-parchment/40">
-        {label}
-      </span>
-    </div>
-  );
-}
-
-function CommandInstrument() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 28 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.85, delay: 0.2, ease }}
-      className="iron-panel relative hidden min-h-[410px] overflow-hidden rounded-md p-8 lg:block"
-    >
-      <Rivets />
-      <div className="map-lines absolute inset-0 opacity-30" />
-      <div className="relative z-10 flex h-full flex-col">
-        <div className="flex items-center justify-between border-b border-brass/25 pb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-parchment/40">
-          <span>Frontier Relay</span>
-          <span className="inline-flex items-center gap-2 text-amber">
-            <i className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber shadow-[0_0_10px_#FF8C00]" />
-            Live
-          </span>
-        </div>
-
-        <div className="my-auto grid grid-cols-2 gap-6 py-9">
-          <GaugeDial value="87" label="Signal Pressure" />
-          <GaugeDial value="04" label="Files Incoming" />
-        </div>
-
-        <div className="space-y-3 border-t border-brass/20 pt-5 font-mono text-[9px] uppercase tracking-[0.16em] text-parchment/35">
-          <div className="flex items-center justify-between">
-            <span>Western Line</span>
-            <span className="text-brass-light">Holding</span>
-          </div>
-          <div className="telegraph-line" />
-          <div className="flex items-center justify-between">
-            <span>Archive Integrity</span>
-            <span className="text-brass-light">Nominal</span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
+    <figure className="hero-portrait">
+      <Image
+        src="/images/hero-banner.png"
+        alt="Carl Grefalde wearing a tweed suit and flat cap"
+        width={1080}
+        height={1350}
+        sizes="(min-width: 1280px) 448px, (min-width: 1024px) 36vw, (min-width: 640px) calc(100vw - 86px), calc(100vw - 58px)"
+        priority
+        className="hero-portrait-image"
+      />
+    </figure>
   );
 }
 
@@ -274,10 +255,6 @@ function BekCover() {
         </div>
       </div>
 
-      <div className="status-tag absolute left-9 top-9 z-20 inline-flex items-center gap-2 rounded-sm px-3 py-2 font-mono text-[8px] uppercase tracking-[0.18em] sm:left-12 sm:top-12">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber shadow-[0_0_10px_#FF8C00]" />
-        Classified Prequel // Recon File #01
-      </div>
     </div>
   );
 }
@@ -379,9 +356,9 @@ function AccessPanel() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" noValidate>
-      <label htmlFor="dispatch-email" className="sr-only">
-        Dispatch email
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <label htmlFor="dispatch-email" className="block text-sm text-parchment/80">
+        Email address
       </label>
       <div className="group relative">
         <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-parchment/25 transition-colors group-focus-within:text-amber" />
@@ -395,8 +372,8 @@ function AccessPanel() {
             setEmail(event.target.value);
             if (status === "error") setStatus("idle");
           }}
-          placeholder="Enter your dispatch email..."
-          className="dispatch-input h-14 w-full rounded-sm pl-11 pr-4 font-mono text-sm outline-none"
+          placeholder="you@example.com"
+          className="dispatch-input h-14 w-full rounded-sm pl-11 pr-4 font-sans text-base outline-none"
         />
       </div>
       {status === "error" && error ? (
@@ -418,7 +395,7 @@ function AccessPanel() {
         ) : (
           <>
             <Wrench className="h-4 w-4 transition-transform group-hover:rotate-12" />
-            [ CLAIM FIELD SUPPLIES ]
+            Get the free book
           </>
         )}
       </motion.button>
@@ -429,8 +406,92 @@ function AccessPanel() {
   );
 }
 
+function ProjectsDropdown() {
+  const [open, setOpen] = useState(false);
+  const container = useRef<HTMLDivElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function dismiss(event: PointerEvent) {
+      if (!container.current?.contains(event.target as Node)) setOpen(false);
+    }
+
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [open]);
+
+  return (
+    <div
+      ref={container}
+      className="relative z-40"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          setOpen(false);
+          trigger.current?.focus();
+        }
+      }}
+    >
+      <button
+        ref={trigger}
+        type="button"
+        aria-expanded={open}
+        aria-controls="projects-dropdown"
+        onClick={() => setOpen(!open)}
+        className="inline-flex min-h-11 items-center gap-2 rounded-sm px-3 font-sans text-base font-medium text-parchment/80 transition-colors hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+      >
+        Projects
+        <ChevronDown
+          aria-hidden="true"
+          className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      <nav
+        id="projects-dropdown"
+        aria-label="Projects"
+        hidden={!open}
+        className="absolute right-0 top-full mt-2 w-60 rounded-sm border border-brass/35 bg-gunmetal p-2 shadow-xl"
+      >
+        <span aria-disabled="true" className="block px-3 py-3 font-sans text-base text-parchment/45">
+          Steel Machina (Soon)
+        </span>
+        <a
+          href="#bek"
+          onClick={(event) => {
+            event.preventDefault();
+            setOpen(false);
+            window.history.pushState(null, "", "#bek");
+            scrollToBek();
+          }}
+          className="block rounded-sm px-3 py-3 font-sans text-base text-parchment transition-colors hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
+        >
+          Child of Destiny
+        </a>
+      </nav>
+    </div>
+  );
+}
+
 export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
   const pathname = usePathname();
+  const downloadDialog = useRef<HTMLDialogElement>(null);
+  const [downloadOpen, setDownloadOpen] = useState(false);
+
+  useEffect(() => {
+    if (!downloadOpen) return;
+    const dialog = downloadDialog.current;
+    const previousOverflow = document.body.style.overflow;
+    dialog?.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog?.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [downloadOpen]);
 
   useEffect(() => {
     const shouldScroll =
@@ -439,10 +500,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
     if (!shouldScroll) return;
 
     const frame = window.requestAnimationFrame(() => {
-      document.getElementById("bek")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      scrollToBek();
     });
 
     return () => window.cancelAnimationFrame(frame);
@@ -457,15 +515,13 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
 
       <section className="relative z-10 flex min-h-screen flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-12">
         <header className="mx-auto flex w-full max-w-7xl items-center justify-between border-b border-brass/15 pb-5">
-          <div className="brass-plate relative inline-flex items-center gap-3 px-4 py-3 font-mono text-[8px] uppercase tracking-[0.19em] text-parchment/70 sm:text-[9px]">
+          <div className="brass-plate relative inline-flex items-center gap-3 px-4 py-3 font-sans text-base font-medium text-parchment/85 sm:text-lg">
             <span className="flex h-7 w-7 items-center justify-center border border-brass/50 bg-black/25 text-brass-light">
               CG
             </span>
-            <span>Command Dossier // Carl Grefalde Archives</span>
+            <span>Carl Griff</span>
           </div>
-          <div className="hidden items-center gap-2 font-mono text-[8px] uppercase tracking-[0.2em] text-amber/60 sm:flex">
-            <Radio className="h-3.5 w-3.5" /> Telegraph online
-          </div>
+          <ProjectsDropdown />
         </header>
 
         <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-14 py-20 lg:grid-cols-[1.25fr_0.75fr] lg:py-24">
@@ -476,28 +532,42 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
           >
             <div className="mb-7 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.26em] text-copper-light">
               <span className="telegraph-dot" />
-              Field transmission 001 // Eyes only
+              Exclusive transmission from the creator
             </div>
             <h1 className="max-w-5xl font-display text-[clamp(3rem,7.2vw,7.4rem)] font-bold uppercase leading-[0.9] tracking-[-0.045em]">
-              Warfare, Weird Tech
-              <span className="brass-text block">&amp; The Frontier</span>
+              CARL GRIFF
             </h1>
-            <p className="mt-8 max-w-2xl text-base leading-8 text-parchment/55 sm:text-lg">
-              March through the diesel-choked trenches of{" "}
-              <span className="text-parchment">Blood Magic and Steel</span>,
-              then trade the gunsmoke for strange drinks and stranger company
-              in the cozy galactic frontier of{" "}
-              <span className="text-parchment">8 Tentacles Bar Tender</span>.
+            <p className="mt-4 text-base leading-relaxed text-parchment/70 sm:text-xl">
+              a pen name of Carlston Grefalde
+            </p>
+            <p className="mt-8 max-w-3xl text-base leading-8 text-parchment/55 sm:text-lg">
+              Carl Griff is the pen name of Carlston Grefalde, a software
+              developer, game developer, father, and lifelong worldbuilder.
+              After years of creating worlds through notebooks, code, and game
+              development, he returned to one of his oldest ambitions: writing
+              fantasy.
+            </p>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-parchment/55 sm:text-lg">
+              He is currently working on his debut novel,{" "}
+              <em className="text-parchment">
+                Steel of Machina: Book One — The Uncrowned
+              </em>
+              .
             </p>
 
             <div className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
               <motion.a
                 href="#bek"
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.history.pushState(null, "", "#bek");
+                  scrollToBek();
+                }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="brass-button group inline-flex min-h-14 items-center gap-3 rounded-sm px-6 font-mono text-xs font-bold tracking-[0.14em]"
               >
-                [ UNLOCK PREQUEL DOSSIER ]
+                UNLOCK PREQUEL DOSSIER
                 <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
               </motion.a>
               <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25">
@@ -506,13 +576,13 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             </div>
           </motion.div>
 
-          <CommandInstrument />
+          <HeroPortrait />
         </div>
 
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between border-t border-brass/10 pt-5 font-mono text-[8px] uppercase tracking-[0.2em] text-parchment/20">
           <span>Dark military fantasy</span>
           <Gauge className="hidden h-4 w-4 text-brass/30 sm:block" />
-          <span>Cozy frontier science fiction</span>
+          <span>Cozy Dark fantasy (soon)</span>
         </div>
       </section>
 
@@ -520,11 +590,24 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
 
       <section
         id="bek"
-        className="relative z-10 scroll-mt-0 px-5 py-24 sm:px-8 lg:px-12 lg:py-32"
+        className="relative z-10 scroll-mt-0 px-5 py-24 sm:px-8 lg:px-12 lg:py-12"
       >
-        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20">
+        <div id="bek-content" className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20">
           <motion.div {...reveal}>
-            <BekCover />
+            <div className="relative pb-20">
+              <BekCover />
+              <button
+                type="button"
+                aria-haspopup="dialog"
+                onClick={() => setDownloadOpen(true)}
+                className="absolute inset-0 z-40 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
+              >
+                <span className="absolute inset-x-0 bottom-0 flex min-h-14 items-center justify-center gap-2 rounded-sm border border-brass bg-gunmetal px-4 py-3 font-sans text-base font-semibold text-parchment shadow-lg">
+                  <Download aria-hidden="true" className="h-5 w-5" />
+                  Get the free book
+                </span>
+              </button>
+            </div>
           </motion.div>
 
           <motion.div {...reveal} transition={{ ...reveal.transition, delay: 0.12 }}>
@@ -539,10 +622,11 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               A Companion Novella to Blood Magic and Steel
             </p>
             <p className="mt-7 max-w-2xl text-base leading-8 text-parchment/55">
-              Before the stars, young Bek learned to survive knee-deep mud,
-              dark blood magic, and the thunder of diesel artillery. This is
-              the classified account of the child he was before war marked
-              him for a larger frontier.
+              <strong>BEK</strong> is a short novella set in the world of{" "}
+              <em>Steel of Machina</em>. In the lawless canal city of Basabas,
+              a side character gets an adventure of his own—through crowded
+              piers, shifting tides, strange beasts, and the dangerous corners
+              the main story leaves behind.
             </p>
 
             <div className="my-9 flex items-center gap-3">
@@ -584,16 +668,74 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             </div>
 
             <div className="mt-8">
-              <AccessPanel />
+              <button
+                type="button"
+                aria-haspopup="dialog"
+                onClick={() => setDownloadOpen(true)}
+                className="copper-button flex min-h-14 w-full items-center justify-center gap-3 rounded-sm px-5 font-sans text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
+              >
+                <Download aria-hidden="true" className="h-5 w-5" />
+                Get the free book
+              </button>
             </div>
           </motion.div>
         </div>
       </section>
 
+      <dialog
+        ref={downloadDialog}
+        aria-labelledby="download-title"
+        aria-describedby="download-description"
+        onClose={() => setDownloadOpen(false)}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setDownloadOpen(false);
+        }}
+        className="m-auto max-h-[90dvh] w-[calc(100%_-_2rem)] max-w-lg overflow-y-auto rounded-md border border-brass/50 bg-gunmetal p-0 text-parchment shadow-2xl backdrop:bg-black/75"
+      >
+        <div className="p-5 sm:p-8">
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <h2 id="download-title" className="font-display text-2xl leading-tight sm:text-3xl">
+              Bek: A Child of Destiny
+            </h2>
+            <button
+              type="button"
+              aria-label="Close download form"
+              onClick={() => setDownloadOpen(false)}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-brass/30 hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
+            >
+              <X aria-hidden="true" className="h-5 w-5" />
+            </button>
+          </div>
+          <p id="download-description" className="mb-6 text-base leading-7 text-parchment/75">
+            Enter your email to sign up and get the free novella. After signup,
+            choose PDF or EPUB to download your copy.
+          </p>
+          <div className="mb-6 rounded-sm border border-brass/25 bg-brass/5 p-4">
+            <h3 className="mb-3 font-sans text-base font-semibold text-parchment">
+              What’s included
+            </h3>
+            <ul className="space-y-3 text-sm leading-6 text-parchment/80">
+              {[
+                "Free short novella in PDF or EPUB",
+                "High-resolution wallpaper",
+                "Character card",
+                "Monthly updates with more extras",
+              ].map((benefit) => (
+                <li key={benefit} className="flex items-start gap-3">
+                  <Check aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-brass-light" />
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <AccessPanel />
+        </div>
+      </dialog>
+
       <footer className="relative z-10 border-t border-brass/15 px-5 py-7 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Carl Grefalde Archives</span>
-          <span>End transmission // Await further orders</span>
+          <span>© {new Date().getFullYear()} Carlston Grefalde Archives</span>
+          <span>End transmission. Await further orders</span>
         </div>
       </footer>
     </main>

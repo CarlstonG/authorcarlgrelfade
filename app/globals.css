@@ -40,6 +40,71 @@ body {
   color: #fff7df;
 }
 
+.hero-portrait {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 6px;
+  background: #171715;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+.hero-portrait-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  outline: 1px solid rgba(244, 236, 216, 0.2);
+  outline-offset: -1px;
+}
+
+@media (min-width: 640px) {
+  .hero-portrait {
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-portrait {
+    max-width: 28rem;
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  #bek-content .iron-frame {
+    min-height: 520px;
+  }
+
+  #bek-content .bek-cover .py-14 {
+    padding-block: 20px;
+  }
+
+  #bek-content h2 {
+    font-size: 2.5rem;
+  }
+
+  #bek-content .mb-6,
+  #bek-content .mb-5 {
+    margin-bottom: 12px;
+  }
+
+  #bek-content .mt-7,
+  #bek-content .mt-8 {
+    margin-top: 16px;
+  }
+
+  #bek-content .my-9 {
+    margin-block: 16px;
+  }
+
+  #bek-content .requisition-item {
+    padding-block: 10px;
+  }
+}
+
 .noise-overlay {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
