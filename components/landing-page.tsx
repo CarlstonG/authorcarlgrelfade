@@ -1,11 +1,11 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { BekSignup } from "@/components/bek-signup";
 import {
   ArrowDown,
-  ArrowUpRight,
   BookOpen,
   Check,
   ChevronDown,
@@ -15,9 +15,6 @@ import {
   FileText,
   Gauge,
   Image as ImageIcon,
-  LoaderCircle,
-  LockKeyhole,
-  Mail,
   Map,
   Radio,
   ScrollText,
@@ -259,153 +256,6 @@ function BekCover() {
   );
 }
 
-function AccessPanel() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "error" | "success"
-  >("idle");
-  const [error, setError] = useState("");
-
-  const pdfUrl =
-    process.env.NEXT_PUBLIC_BEK_PDF_URL ??
-    "/downloads/bek-a-child-of-destiny.pdf";
-  const epubUrl =
-    process.env.NEXT_PUBLIC_BEK_EPUB_URL ??
-    "/downloads/bek-a-child-of-destiny.epub";
-  const wikiUrl =
-    process.env.NEXT_PUBLIC_BEK_WIKI_URL ?? "https://example.com/classified-wiki";
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
-    setStatus("loading");
-
-    try {
-      const response = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const result = (await response.json()) as {
-        success?: boolean;
-        error?: string;
-      };
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error ?? "Dispatch authorization failed.");
-      }
-
-      setStatus("success");
-    } catch (caughtError) {
-      setError(
-        caughtError instanceof Error
-          ? caughtError.message
-          : "Dispatch authorization failed.",
-      );
-      setStatus("error");
-    }
-  }
-
-  if (status === "success") {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.97 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.45, ease }}
-        className="access-granted iron-panel relative overflow-hidden rounded-sm p-6 sm:p-7"
-      >
-        <Rivets />
-        <div className="relative z-10">
-          <div className="mb-6 flex items-center gap-4 border-b border-brass/20 pb-5">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-amber/50 bg-amber/10 text-amber shadow-[0_0_25px_rgba(255,140,0,0.18)]">
-              <Check className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="font-mono text-[8px] uppercase tracking-[0.25em] text-amber/70">
-                Telegraph handshake complete
-              </p>
-              <h3 className="mt-1 font-display text-xl uppercase tracking-[0.05em] text-parchment sm:text-2xl">
-                Access Granted // Telegraph Confirmed
-              </h3>
-            </div>
-          </div>
-          <p className="mb-5 text-sm leading-6 text-parchment/55">
-            Field supplies released. Select your preferred file or enter the
-            classified intelligence archive.
-          </p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <a className="supply-link" href={pdfUrl} download>
-              <Download className="h-4 w-4" /> PDF DOSSIER
-            </a>
-            <a className="supply-link" href={epubUrl} download>
-              <Download className="h-4 w-4" /> EPUB DOSSIER
-            </a>
-            <a
-              className="supply-link sm:col-span-2"
-              href={wikiUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <BookOpen className="h-4 w-4" /> OPEN CLASSIFIED WIKI
-              <ArrowUpRight className="ml-auto h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </motion.div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <label htmlFor="dispatch-email" className="block text-sm text-parchment/80">
-        Email address
-      </label>
-      <div className="group relative">
-        <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-parchment/25 transition-colors group-focus-within:text-amber" />
-        <input
-          id="dispatch-email"
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(event) => {
-            setEmail(event.target.value);
-            if (status === "error") setStatus("idle");
-          }}
-          placeholder="you@example.com"
-          className="dispatch-input h-14 w-full rounded-sm pl-11 pr-4 font-sans text-base outline-none"
-        />
-      </div>
-      {status === "error" && error ? (
-        <p role="alert" className="font-mono text-xs text-red-300">
-          [ TELEGRAPH ERROR ] {error}
-        </p>
-      ) : null}
-      <motion.button
-        type="submit"
-        disabled={status === "loading"}
-        whileHover={{ scale: status === "loading" ? 1 : 1.01 }}
-        whileTap={{ scale: status === "loading" ? 1 : 0.99 }}
-        className="copper-button group flex h-14 w-full items-center justify-center gap-3 rounded-sm px-5 font-mono text-xs font-bold tracking-[0.15em] disabled:cursor-wait disabled:opacity-70"
-      >
-        {status === "loading" ? (
-          <>
-            <LoaderCircle className="h-4 w-4 animate-spin" /> TRANSMITTING...
-          </>
-        ) : (
-          <>
-            <Wrench className="h-4 w-4 transition-transform group-hover:rotate-12" />
-            Get the free book
-          </>
-        )}
-      </motion.button>
-      <p className="flex items-center justify-center gap-2 pt-1 font-mono text-[8px] uppercase tracking-[0.16em] text-parchment/25">
-        <LockKeyhole className="h-3 w-3" /> Encrypted dispatch // No spam
-      </p>
-    </form>
-  );
-}
-
 function ProjectsDropdown() {
   const [open, setOpen] = useState(false);
   const container = useRef<HTMLDivElement>(null);
@@ -567,7 +417,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
                 whileTap={{ scale: 0.98 }}
                 className="brass-button group inline-flex min-h-14 items-center gap-3 rounded-sm px-6 font-mono text-xs font-bold tracking-[0.14em]"
               >
-                UNLOCK PREQUEL DOSSIER
+                GET BEK FREE
                 <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
               </motion.a>
               <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25">
@@ -604,7 +454,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               >
                 <span className="absolute inset-x-0 bottom-0 flex min-h-14 items-center justify-center gap-2 rounded-sm border border-brass bg-gunmetal px-4 py-3 font-sans text-base font-semibold text-parchment shadow-lg">
                   <Download aria-hidden="true" className="h-5 w-5" />
-                  Get the free book
+                  GET BEK FREE
                 </span>
               </button>
             </div>
@@ -619,7 +469,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               Bek: A Child of Destiny
             </h2>
             <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.2em] text-copper-light sm:text-xs">
-              A Companion Novella to Blood Magic and Steel
+              A Short Novella from the World of Steel of Machina
             </p>
             <p className="mt-7 max-w-2xl text-base leading-8 text-parchment/55">
               <strong>BEK</strong> is a short novella set in the world of{" "}
@@ -675,7 +525,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
                 className="copper-button flex min-h-14 w-full items-center justify-center gap-3 rounded-sm px-5 font-sans text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
               >
                 <Download aria-hidden="true" className="h-5 w-5" />
-                Get the free book
+                GET BEK FREE
               </button>
             </div>
           </motion.div>
@@ -699,7 +549,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             </h2>
             <button
               type="button"
-              aria-label="Close download form"
+              aria-label="Close freebie library"
               onClick={() => setDownloadOpen(false)}
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-brass/30 hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
             >
@@ -707,8 +557,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             </button>
           </div>
           <p id="download-description" className="mb-6 text-base leading-7 text-parchment/75">
-            Enter your email to sign up and get the free novella. After signup,
-            choose PDF or EPUB to download your copy.
+            Get the free novella, a character card, and desktop and mobile wallpapers. Enter your email to access your reader rewards.
           </p>
           <div className="mb-6 rounded-sm border border-brass/25 bg-brass/5 p-4">
             <h3 className="mb-3 font-sans text-base font-semibold text-parchment">
@@ -717,7 +566,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             <ul className="space-y-3 text-sm leading-6 text-parchment/80">
               {[
                 "Free short novella in PDF or EPUB",
-                "High-resolution wallpaper",
+                "Desktop and mobile wallpapers",
                 "Character card",
                 "Monthly updates with more extras",
               ].map((benefit) => (
@@ -728,7 +577,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               ))}
             </ul>
           </div>
-          <AccessPanel />
+          <BekSignup />
         </div>
       </dialog>
 
