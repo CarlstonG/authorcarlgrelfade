@@ -6,7 +6,6 @@ import Image from "next/image";
 import { BekSignup } from "@/components/bek-signup";
 import {
   ArrowDown,
-  BookOpen,
   Check,
   ChevronDown,
   Cog,
@@ -15,11 +14,8 @@ import {
   FileText,
   Gauge,
   Image as ImageIcon,
-  Map,
   Radio,
   ScrollText,
-  Shield,
-  UserRound,
   Wrench,
   X,
 } from "lucide-react";
@@ -52,32 +48,49 @@ const reveal = {
 
 const reconFiles = [
   {
-    code: "PUB-01",
-    title: "Blood Magic and Steel",
-    subtitle: "Volume I // Book Cover",
-    icon: BookOpen,
-    className: "recon-cover",
-  },
-  {
-    code: "MAP-07",
-    title: "The Western Trench Line",
-    subtitle: "Interactive Strategic Map",
-    icon: Map,
-    className: "recon-map",
-  },
-  {
-    code: "MECH-13",
-    title: "Trench-Crawl Mech Unit",
-    subtitle: "Concept Illustration",
-    icon: Cog,
-    className: "recon-mech",
+    code: "DOS-01",
+    title: "The Child of Destiny",
+    subtitle: "Official Prequel Cover",
+    image: "/images/child-of-destiny/cover.jpg",
+    imageAlt: "The Child of Destiny prequel cover",
+    imagePosition: "center",
+    imageFit: "cover",
   },
   {
     code: "SUB-12",
     title: "Bek // Age 12",
-    subtitle: "Classified Subject Profile",
-    icon: UserRound,
-    className: "recon-profile",
+    subtitle: "Classified Subject Portrait",
+    image: "/images/child-of-destiny/bek-card.jpg",
+    imageAlt: "Bek standing before a dark stone wall",
+    imagePosition: "center 30%",
+    imageFit: "cover",
+  },
+  {
+    code: "BST-07",
+    title: "Kingtoad",
+    subtitle: "Canal Beast Sighting",
+    image: "/images/child-of-destiny/kingtoad.jpg",
+    imageAlt: "A giant Kingtoad emerging from dark blue water",
+    imagePosition: "center",
+    imageFit: "cover",
+  },
+  {
+    code: "SIG-04",
+    title: "Machina Death Sigil",
+    subtitle: "Recovered Brass Insignia",
+    image: "/images/child-of-destiny/skull-gear.png",
+    imageAlt: "A weathered brass gear entwined with an animal skull",
+    imagePosition: "center",
+    imageFit: "contain",
+  },
+  {
+    code: "REL-09",
+    title: "Ember Plague Mask",
+    subtitle: "Restricted Field Relic",
+    image: "/images/child-of-destiny/plague-mask.png",
+    imageAlt: "A stitched black plague mask with teal lenses and glowing embers",
+    imagePosition: "center",
+    imageFit: "contain",
   },
 ];
 
@@ -133,26 +146,28 @@ function ReconCard({
   file: (typeof reconFiles)[number];
   duplicate?: boolean;
 }) {
-  const Icon = file.icon;
-
   return (
     <motion.article
       whileHover={{ y: -8, rotate: 0.7, scale: 1.015 }}
       transition={{ type: "spring", stiffness: 280, damping: 22 }}
       aria-hidden={duplicate || undefined}
-      className={`recon-card ${file.className} relative h-[290px] w-[260px] shrink-0 overflow-hidden rounded-sm sm:h-[330px] sm:w-[300px]`}
+      className="recon-card group relative h-[340px] w-[270px] shrink-0 overflow-hidden rounded-sm sm:h-[390px] sm:w-[310px]"
     >
       <Rivets />
       <div className="absolute inset-3 overflow-hidden border border-brass/20 bg-gunmetal">
-        <div className="recon-visual absolute inset-0" />
+        <Image
+          src={file.image}
+          alt={duplicate ? "" : file.imageAlt}
+          fill
+          sizes="310px"
+          className={`${file.imageFit === "contain" ? "object-contain p-5" : "object-cover"} transition-transform duration-700 group-hover:scale-105`}
+          style={{ objectPosition: file.imagePosition }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/85" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between border-b border-brass/20 bg-black/35 px-4 py-3 font-mono text-[8px] uppercase tracking-[0.2em] text-parchment/45">
           <span>{file.code}</span>
           <span>Recon Asset</span>
         </div>
-        <Icon
-          className="absolute left-1/2 top-[43%] h-20 w-20 -translate-x-1/2 -translate-y-1/2 text-brass/45"
-          strokeWidth={0.8}
-        />
         <div className="absolute inset-x-0 bottom-0 border-t border-copper/30 bg-[#11100e]/90 p-5 backdrop-blur-sm">
           <p className="font-display text-lg font-semibold uppercase tracking-[0.04em] text-parchment">
             {file.title}
@@ -206,49 +221,17 @@ function BekCover() {
   return (
     <div className="iron-frame relative min-h-[610px] overflow-hidden rounded-md p-5 shadow-2xl sm:min-h-[680px] sm:p-7">
       <Rivets />
-      <div className="bek-cover absolute inset-5 overflow-hidden border border-brass/30 sm:inset-7">
-        <div className="map-lines absolute inset-0 opacity-35" />
-        <div className="absolute -left-20 bottom-8 h-64 w-64 rounded-full bg-amber/10 blur-[80px]" />
-        <div className="absolute -right-12 top-12 h-52 w-52 rounded-full bg-copper/10 blur-[70px]" />
-
-        <div className="relative flex h-full flex-col justify-between p-7 sm:p-10">
-          <div className="flex items-center justify-between font-mono text-[8px] uppercase tracking-[0.2em] text-parchment/40">
-            <span>Recon File 01</span>
-            <span>Restricted</span>
-          </div>
-
-          <div className="py-14 text-center">
-            <div className="relative mx-auto mb-10 flex h-28 w-28 items-center justify-center rounded-full border border-brass/45 bg-black/25 shadow-[0_0_50px_rgba(255,140,0,0.12)]">
-              <Compass className="h-12 w-12 text-brass-light" strokeWidth={1} />
-              <span className="absolute -inset-2 rounded-full border border-dashed border-copper/25" />
-            </div>
-            <p className="mb-5 font-mono text-[9px] uppercase tracking-[0.36em] text-amber">
-              A child marked by destiny
-            </p>
-            <h3 className="brass-text font-display text-7xl font-bold tracking-[0.08em] sm:text-8xl">
-              BEK
-            </h3>
-            <div className="mx-auto my-7 flex w-28 items-center gap-2">
-              <span className="h-px flex-1 bg-brass/50" />
-              <Cog className="h-4 w-4 text-copper" />
-              <span className="h-px flex-1 bg-brass/50" />
-            </div>
-            <p className="font-display text-lg uppercase tracking-[0.18em] text-parchment/75">
-              A Child of Destiny
-            </p>
-          </div>
-
-          <div className="flex items-end justify-between border-t border-brass/20 pt-5">
-            <div>
-              <p className="font-mono text-[8px] uppercase tracking-[0.2em] text-parchment/30">
-                Blood Magic and Steel
-              </p>
-              <p className="mt-2 font-display text-sm uppercase tracking-[0.1em] text-parchment/70">
-                Carl Grefalde
-              </p>
-            </div>
-            <Shield className="h-7 w-7 text-brass/40" strokeWidth={1} />
-          </div>
+      <div className="bek-cover absolute inset-5 overflow-hidden border border-brass/30 bg-black sm:inset-7">
+        <Image
+          src="/images/child-of-destiny/cover.jpg"
+          alt="The Child of Destiny, a short prequel by Carl Griff"
+          fill
+          sizes="(min-width: 1024px) 42vw, calc(100vw - 80px)"
+          className="object-contain"
+          priority
+        />
+        <div className="status-tag absolute left-4 top-4 z-10 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.18em] sm:left-5 sm:top-5">
+          Official prequel // Recon file 01
         </div>
       </div>
 
@@ -310,11 +293,11 @@ function ProjectsDropdown() {
           Steel Machina (Soon)
         </span>
         <a
-          href="#bek"
+          href="#child-of-destiny"
           onClick={(event) => {
             event.preventDefault();
             setOpen(false);
-            window.history.pushState(null, "", "#bek");
+            window.history.pushState(null, "", "#child-of-destiny");
             scrollToBek();
           }}
           className="block rounded-sm px-3 py-3 font-sans text-base text-parchment transition-colors hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
@@ -345,7 +328,10 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
 
   useEffect(() => {
     const shouldScroll =
-      focusBek || pathname === "/bek" || window.location.hash === "#bek";
+      focusBek ||
+      pathname === "/child-of-destiny" ||
+      window.location.hash === "#child-of-destiny" ||
+      window.location.hash === "#bek";
 
     if (!shouldScroll) return;
 
@@ -407,17 +393,17 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
 
             <div className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
               <motion.a
-                href="#bek"
+                href="#child-of-destiny"
                 onClick={(event) => {
                   event.preventDefault();
-                  window.history.pushState(null, "", "#bek");
+                  window.history.pushState(null, "", "#child-of-destiny");
                   scrollToBek();
                 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="brass-button group inline-flex min-h-14 items-center gap-3 rounded-sm px-6 font-mono text-xs font-bold tracking-[0.14em]"
               >
-                GET BEK FREE
+                GET THE CHILD OF DESTINY FREE
                 <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
               </motion.a>
               <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25">
@@ -439,7 +425,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       <ReconCarousel />
 
       <section
-        id="bek"
+        id="child-of-destiny"
         className="relative z-10 scroll-mt-0 px-5 py-24 sm:px-8 lg:px-12 lg:py-12"
       >
         <div id="bek-content" className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20">
@@ -454,7 +440,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               >
                 <span className="absolute inset-x-0 bottom-0 flex min-h-14 items-center justify-center gap-2 rounded-sm border border-brass bg-gunmetal px-4 py-3 font-sans text-base font-semibold text-parchment shadow-lg">
                   <Download aria-hidden="true" className="h-5 w-5" />
-                  GET BEK FREE
+                  GET THE CHILD OF DESTINY FREE
                 </span>
               </button>
             </div>
@@ -466,13 +452,13 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               [ Field Dispatch Access ]
             </div>
             <h2 className="font-display text-4xl font-bold leading-tight text-parchment sm:text-6xl">
-              Bek: A Child of Destiny
+              The Child of Destiny
             </h2>
             <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.2em] text-copper-light sm:text-xs">
               A Short Novella from the World of Steel of Machina
             </p>
             <p className="mt-7 max-w-2xl text-base leading-8 text-parchment/55">
-              <strong>BEK</strong> is a short novella set in the world of{" "}
+              <strong>The Child of Destiny</strong> is a short novella set in the world of{" "}
               <em>Steel of Machina</em>. In the lawless canal city of Basabas,
               a side character gets an adventure of his own—through crowded
               piers, shifting tides, strange beasts, and the dangerous corners
@@ -525,7 +511,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
                 className="copper-button flex min-h-14 w-full items-center justify-center gap-3 rounded-sm px-5 font-sans text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
               >
                 <Download aria-hidden="true" className="h-5 w-5" />
-                GET BEK FREE
+                GET THE CHILD OF DESTINY FREE
               </button>
             </div>
           </motion.div>
@@ -545,7 +531,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
         <div className="p-5 sm:p-8">
           <div className="mb-4 flex items-start justify-between gap-3">
             <h2 id="download-title" className="font-display text-2xl leading-tight sm:text-3xl">
-              Bek: A Child of Destiny
+              The Child of Destiny
             </h2>
             <button
               type="button"
@@ -584,7 +570,12 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       <footer className="relative z-10 border-t border-brass/15 px-5 py-7 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} Carlston Grefalde Archives</span>
-          <span>End transmission. Await further orders</span>
+          <div className="flex items-center gap-4">
+            <a href="/privacy" className="hover:text-parchment/70">
+              Privacy
+            </a>
+            <span>End transmission. Await further orders</span>
+          </div>
         </div>
       </footer>
     </main>

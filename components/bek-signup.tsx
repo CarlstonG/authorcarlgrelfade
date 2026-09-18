@@ -44,10 +44,18 @@ export function BekSignup() {
       {error && <p id={id + "-error"} role="alert" className="text-sm text-red-300">{error}</p>}
       <button type="submit" disabled={busy}
         className="copper-button flex min-h-14 w-full items-center justify-center rounded-sm px-4 text-base font-semibold disabled:cursor-wait disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass">
-        {busy ? "Getting your reader pack…" : "GET BEK FREE"}
+        {busy ? "Getting your reader pack…" : "GET THE CHILD OF DESTINY FREE"}
       </button>
       <p className="text-sm leading-6 text-parchment/70">
-        By signing up, you’ll join the Carl Griff reader list. Unsubscribe anytime.
+        By signing up, you agree to receive your reader pack and occasional
+        emails from Carl Griff. Unsubscribe anytime. Read the{" "}
+        <a
+          href="/privacy"
+          className="text-brass-light underline decoration-brass/50 underline-offset-4 hover:text-parchment"
+        >
+          Privacy Policy
+        </a>
+        .
       </p>
     </form>
   );
