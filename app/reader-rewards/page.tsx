@@ -10,16 +10,29 @@ const rewards = [
   {
     title: "THE CHILD OF DESTINY",
     description: "A short novella from the world of Steel of Machina.",
-    label: "READ / DOWNLOAD PDF",
-    url: process.env.CHILD_OF_DESTINY_PDF_URL,
-    trackPdfClick: true,
+    links: [
+      {
+        label: "READ / DOWNLOAD PDF",
+        url: process.env.CHILD_OF_DESTINY_PDF_URL,
+        trackPdfClick: true,
+      },
+      {
+        label: "DOWNLOAD EPUB",
+        url: process.env.CHILD_OF_DESTINY_EPUB_URL,
+        trackPdfClick: false,
+      },
+    ],
   },
   {
     title: "BONUS ART PACK",
     description: "Wallpapers, character card, and illustrations.",
-    label: "DOWNLOAD BONUS ART PACK",
-    url: process.env.CHILD_OF_DESTINY_BONUS_ART_ZIP_URL,
-    trackPdfClick: false,
+    links: [
+      {
+        label: "DOWNLOAD BONUS ART PACK",
+        url: process.env.CHILD_OF_DESTINY_BONUS_ART_ZIP_URL,
+        trackPdfClick: false,
+      },
+    ],
   },
 ];
 
@@ -38,22 +51,28 @@ export default function ReaderRewardsPage() {
               <h2 className="font-display text-2xl">{reward.title}</h2>
               <p className="mt-3 leading-7 text-parchment/75">{reward.description}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                {reward.url && reward.trackPdfClick ? (
-                  <TrackedPdfLink
-                    href={reward.url}
-                    className="copper-button inline-flex min-h-12 items-center justify-center rounded-sm px-5 py-3 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
-                  >
-                    {reward.label}
-                  </TrackedPdfLink>
-                ) : reward.url ? (
-                  <a
-                    href={reward.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="copper-button inline-flex min-h-12 items-center justify-center rounded-sm px-5 py-3 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
-                  >
-                    {reward.label}
-                  </a>
+                {reward.links.some((link) => link.url) ? (
+                  reward.links.map((link) =>
+                    link.url && link.trackPdfClick ? (
+                      <TrackedPdfLink
+                        key={link.label}
+                        href={link.url}
+                        className="copper-button inline-flex min-h-12 items-center justify-center rounded-sm px-5 py-3 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
+                      >
+                        {link.label}
+                      </TrackedPdfLink>
+                    ) : link.url ? (
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="copper-button inline-flex min-h-12 items-center justify-center rounded-sm px-5 py-3 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
+                      >
+                        {link.label}
+                      </a>
+                    ) : null,
+                  )
                 ) : (
                   <p className="text-sm text-parchment/60">Coming soon — files are being prepared.</p>
                 )}
