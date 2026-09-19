@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TrackedPdfLink } from "@/components/tracked-pdf-link";
 
 export const metadata: Metadata = {
   title: "Reader Rewards | Carl Griff",
@@ -11,12 +12,14 @@ const rewards = [
     description: "A short novella from the world of Steel of Machina.",
     label: "READ / DOWNLOAD PDF",
     url: process.env.CHILD_OF_DESTINY_PDF_URL,
+    trackPdfClick: true,
   },
   {
     title: "BONUS ART PACK",
     description: "Wallpapers, character card, and illustrations.",
     label: "DOWNLOAD BONUS ART PACK",
     url: process.env.CHILD_OF_DESTINY_BONUS_ART_ZIP_URL,
+    trackPdfClick: false,
   },
 ];
 
@@ -35,7 +38,14 @@ export default function ReaderRewardsPage() {
               <h2 className="font-display text-2xl">{reward.title}</h2>
               <p className="mt-3 leading-7 text-parchment/75">{reward.description}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                {reward.url ? (
+                {reward.url && reward.trackPdfClick ? (
+                  <TrackedPdfLink
+                    href={reward.url}
+                    className="copper-button inline-flex min-h-12 items-center justify-center rounded-sm px-5 py-3 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
+                  >
+                    {reward.label}
+                  </TrackedPdfLink>
+                ) : reward.url ? (
                   <a
                     href={reward.url}
                     target="_blank"
