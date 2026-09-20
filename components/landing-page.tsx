@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { BekSignup } from "@/components/bek-signup";
+import { ContactForm } from "@/components/contact-form";
 import {
   ArrowDown,
   Check,
@@ -13,7 +14,10 @@ import {
   Download,
   FileText,
   Gauge,
+  Facebook,
   Image as ImageIcon,
+  Instagram,
+  Mail,
   Radio,
   ScrollText,
   Wrench,
@@ -22,6 +26,19 @@ import {
 import { usePathname } from "next/navigation";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+const socialLinks = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/carlgriff.author/",
+    icon: Instagram,
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/CarlGGriff",
+    icon: Facebook,
+  },
+];
 
 function scrollToBek() {
   const target = document.getElementById("bek-content");
@@ -120,6 +137,28 @@ function Rivets() {
       <i className="rivet bottom-3 left-3" />
       <i className="rivet bottom-3 right-3" />
     </>
+  );
+}
+
+function SocialLinks({ footer = false }: { footer?: boolean }) {
+  return (
+    <nav aria-label="Carl Griff on social media" className="flex items-center gap-2">
+      {socialLinks.map(({ label, href, icon: Icon }) => (
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Follow Carl Griff on ${label}`}
+          title={label}
+          className={`inline-flex shrink-0 items-center justify-center rounded-sm border border-brass/30 bg-black/20 text-brass-light transition-colors hover:border-brass/70 hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${
+            footer ? "h-12 w-12" : "h-11 w-11"
+          }`}
+        >
+          <Icon aria-hidden="true" className={footer ? "h-6 w-6" : "h-[18px] w-[18px]"} />
+        </a>
+      ))}
+    </nav>
   );
 }
 
@@ -312,7 +351,9 @@ function ProjectsDropdown() {
 export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
   const pathname = usePathname();
   const downloadDialog = useRef<HTMLDialogElement>(null);
+  const contactDialog = useRef<HTMLDialogElement>(null);
   const [downloadOpen, setDownloadOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     if (!downloadOpen) return;
@@ -325,6 +366,18 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       document.body.style.overflow = previousOverflow;
     };
   }, [downloadOpen]);
+
+  useEffect(() => {
+    if (!contactOpen) return;
+    const dialog = contactDialog.current;
+    const previousOverflow = document.body.style.overflow;
+    dialog?.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog?.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [contactOpen]);
 
   useEffect(() => {
     const shouldScroll =
@@ -350,14 +403,28 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       <div className="pointer-events-none fixed -right-48 top-[45%] z-0 h-[40rem] w-[40rem] rounded-full bg-amber/[0.05] blur-[160px]" />
 
       <section className="relative z-10 flex min-h-screen flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-12">
-        <header className="mx-auto flex w-full max-w-7xl items-center justify-between border-b border-brass/15 pb-5">
-          <div className="brass-plate relative inline-flex items-center gap-3 px-4 py-3 font-sans text-base font-medium text-parchment/85 sm:text-lg">
-            <span className="flex h-7 w-7 items-center justify-center border border-brass/50 bg-black/25 text-brass-light">
-              CG
-            </span>
-            <span>Carl Griff</span>
+        <header className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 border-b border-brass/15 pb-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="brass-plate relative inline-flex items-center gap-3 px-3 py-3 font-sans text-base font-medium text-parchment/85 sm:px-4 sm:text-lg">
+              <span className="flex h-7 w-7 items-center justify-center border border-brass/50 bg-black/25 text-brass-light">
+                CG
+              </span>
+              <span className="hidden sm:inline">Carl Griff</span>
+            </div>
+            <SocialLinks />
           </div>
-          <ProjectsDropdown />
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-haspopup="dialog"
+              onClick={() => setContactOpen(true)}
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-brass/25 px-3 font-sans text-base font-medium text-parchment/80 transition-colors hover:border-brass/60 hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+            >
+              <Mail className="h-[18px] w-[18px] text-brass-light" aria-hidden="true" />
+              <span className="hidden md:inline">Contact Me</span>
+            </button>
+            <ProjectsDropdown />
+          </div>
         </header>
 
         <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-14 py-20 lg:grid-cols-[1.25fr_0.75fr] lg:py-24">
@@ -567,9 +634,46 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
         </div>
       </dialog>
 
+      <dialog
+        ref={contactDialog}
+        aria-labelledby="contact-title"
+        aria-describedby="contact-description"
+        onClose={() => setContactOpen(false)}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setContactOpen(false);
+        }}
+        className="m-auto max-h-[90dvh] w-[calc(100%_-_2rem)] max-w-xl overflow-y-auto rounded-md border border-brass/50 bg-gunmetal p-0 text-parchment shadow-2xl backdrop:bg-black/75"
+      >
+        <div className="p-5 sm:p-8">
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <div>
+              <p className="mb-2 font-mono text-[8px] uppercase tracking-[0.22em] text-amber">
+                [ Direct transmission ]
+              </p>
+              <h2 id="contact-title" className="font-display text-3xl leading-tight">
+                Contact Carl
+              </h2>
+            </div>
+            <button
+              type="button"
+              aria-label="Close contact form"
+              onClick={() => setContactOpen(false)}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-brass/30 hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
+            >
+              <X aria-hidden="true" className="h-5 w-5" />
+            </button>
+          </div>
+          <p id="contact-description" className="mb-6 leading-7 text-parchment/70">
+            Questions, reader notes, and professional inquiries are welcome.
+          </p>
+          <ContactForm />
+        </div>
+      </dialog>
+
       <footer className="relative z-10 border-t border-brass/15 px-5 py-7 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 font-mono text-[8px] uppercase tracking-[0.18em] text-parchment/25 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} Carlston Grefalde Archives</span>
+          <SocialLinks footer />
           <div className="flex items-center gap-4">
             <a href="/privacy" className="hover:text-parchment/70">
               Privacy

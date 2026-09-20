@@ -10,6 +10,7 @@ const sections = [
     title: "Information collected",
     body: [
       "When you request The Child of Destiny reader pack or join the reader list, this site collects the email address you submit.",
+      "When you use the contact form, this site collects the name, email address, and message you submit so Carl Griff can respond.",
       "The website host may also process limited technical information needed to serve and secure the site, such as an IP address, browser type, request time, and server logs.",
     ],
   },
@@ -17,6 +18,7 @@ const sections = [
     title: "How information is used",
     body: [
       "Your email address is used to deliver the requested reader rewards, manage your subscription, and send occasional messages about books, stories, releases, and related reader material from Carl Griff.",
+      "Contact-form information is used only to review and respond to your inquiry unless a longer retention period is required for legal or security purposes.",
       "Personal information is not sold. It may be disclosed when required by law or when reasonably necessary to protect the website, its readers, or its services.",
     ],
   },
@@ -24,6 +26,7 @@ const sections = [
     title: "Email provider",
     body: [
       "The reader list is managed through Kit. When you submit the signup form, your email address is sent to Kit so it can maintain your subscription and deliver email. Kit processes subscriber information under its own terms and data-processing commitments.",
+      "Contact-form messages are delivered through Resend. The submitted name, email address, and message are sent to Resend for email delivery to Carl Griff.",
     ],
   },
   {
@@ -36,7 +39,7 @@ const sections = [
   {
     title: "Cookies and tracking",
     body: [
-      "The current website does not intentionally set advertising or analytics cookies. Essential infrastructure operated by the website host may process technical data required to provide and protect the service.",
+      "The website uses Vercel Web Analytics to understand aggregate site usage. Vercel Web Analytics is designed without advertising cookies and processes anonymized usage data. Essential infrastructure may also process technical data required to provide and protect the service.",
     ],
   },
   {
@@ -70,7 +73,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mt-5 text-sm text-parchment/50">
-          Last updated: September 18, 2026
+          Last updated: September 20, 2026
         </p>
         <p className="mt-8 max-w-3xl text-base leading-8 text-parchment/75">
           This policy explains how Carlston Grefalde, publishing as Carl Griff,
