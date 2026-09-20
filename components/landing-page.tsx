@@ -452,12 +452,13 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             </div>
             <SocialLinks />
           </div>
-          <div className="order-3 flex w-full items-center justify-between gap-2 border-t border-brass/10 pt-3 sm:order-none sm:w-auto sm:border-0 sm:pt-0">
-            <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-2">
+          <div className="order-3 flex w-full flex-wrap items-center justify-center gap-2 border-t border-brass/10 pt-3 sm:order-none sm:w-auto sm:justify-end sm:border-0 sm:pt-0">
+            <nav aria-label="Main navigation" className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
               <ProjectsDropdown />
               <a href="/books" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Books</a>
               <a href="/gallery" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Gallery</a>
               <a href="/about" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">About</a>
+              <a href="#reader-list" className="rounded-sm px-2 py-3 text-base font-medium text-brass-light hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Reader List</a>
             </nav>
             <button
               id="contact"

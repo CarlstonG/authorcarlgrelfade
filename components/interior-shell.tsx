@@ -5,6 +5,7 @@ const navLinks = [
   { href: "/books", label: "Books" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
+  { href: "/#reader-list", label: "Reader List" },
 ];
 
 export function InteriorHeader() {
