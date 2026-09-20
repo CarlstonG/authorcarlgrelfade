@@ -55,7 +55,7 @@ export function BekSignup() {
         >
           Privacy Policy
         </a>
-        .
+        {" "}and <a href="/terms" className="text-brass-light underline decoration-brass/50 underline-offset-4 hover:text-parchment">Terms of Use</a>.
       </p>
     </form>
   );

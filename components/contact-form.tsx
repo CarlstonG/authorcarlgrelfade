@@ -128,7 +128,8 @@ export function ContactForm() {
         {status === "loading" ? "SENDING DISPATCH…" : "SEND MESSAGE"}
       </button>
       <p className="text-xs leading-5 text-parchment/50">
-        Your details are used only to reply to this message.
+        Your details are used only to reply to this message. See the{" "}
+        <a href="/privacy" className="text-brass-light underline underline-offset-4">Privacy Policy</a>.
       </p>
     </form>
   );

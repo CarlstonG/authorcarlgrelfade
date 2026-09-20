@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { BekSignup } from "@/components/bek-signup";
 import { ContactForm } from "@/components/contact-form";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import {
   ArrowDown,
   Check,
@@ -278,6 +279,35 @@ function BekCover() {
   );
 }
 
+function ArchivePreview() {
+  return (
+    <section className="relative z-10 px-5 py-20 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-6 lg:grid-cols-3">
+          <a href="/books" className="iron-frame rounded-sm p-7 transition-transform hover:-translate-y-1">
+            <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-copper-light">Book status</p>
+            <h2 className="mt-4 font-display text-2xl">The Uncrowned</h2>
+            <p className="mt-4 leading-7 text-parchment/60">Book One of Steel of Machina is in development.</p>
+            <p className="mt-6 border-l-2 border-brass/50 pl-3 text-sm text-parchment/40">Coming Soon</p>
+          </a>
+          <a href="/gallery" className="iron-frame rounded-sm p-7 transition-transform hover:-translate-y-1">
+            <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-copper-light">Visual archive</p>
+            <h2 className="mt-4 font-display text-2xl">Concept Gallery</h2>
+            <p className="mt-4 leading-7 text-parchment/60">Inspect character files, creatures, relics, and artwork from the frontier.</p>
+            <p className="mt-6 text-sm font-semibold text-brass-light">OPEN THE GALLERY →</p>
+          </a>
+          <article className="iron-frame rounded-sm p-7">
+            <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-copper-light">Reader dispatches</p>
+            <h2 className="mt-4 font-display text-2xl">Field Reports</h2>
+            <p className="mt-4 leading-7 text-parchment/60">Reader reactions will appear here after the next advance-reader campaign.</p>
+            <p className="mt-6 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-brass-light">Coming soon</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProjectsDropdown() {
   const [open, setOpen] = useState(false);
   const container = useRef<HTMLDivElement>(null);
@@ -314,7 +344,7 @@ function ProjectsDropdown() {
         aria-expanded={open}
         aria-controls="projects-dropdown"
         onClick={() => setOpen(!open)}
-        className="inline-flex min-h-11 items-center gap-2 rounded-sm px-3 font-sans text-base font-medium text-parchment/80 transition-colors hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+        className="inline-flex min-h-11 items-center gap-2 rounded-sm px-2 font-sans text-base font-medium text-parchment/80 transition-colors hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass sm:px-3 sm:text-lg"
       >
         Projects
         <ChevronDown
@@ -395,6 +425,15 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
     return () => window.cancelAnimationFrame(frame);
   }, [focusBek, pathname]);
 
+  useEffect(() => {
+    const openFromHash = () => {
+      if (window.location.hash === "#contact") setContactOpen(true);
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, []);
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-gunmetal text-parchment">
       <div className="noise-overlay pointer-events-none fixed inset-0 z-50 opacity-[0.065]" />
@@ -403,7 +442,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       <div className="pointer-events-none fixed -right-48 top-[45%] z-0 h-[40rem] w-[40rem] rounded-full bg-amber/[0.05] blur-[160px]" />
 
       <section className="relative z-10 flex min-h-screen flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-12">
-        <header className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 border-b border-brass/15 pb-5">
+        <header className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 border-b border-brass/15 pb-5">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="brass-plate relative inline-flex items-center gap-3 px-3 py-3 font-sans text-base font-medium text-parchment/85 sm:px-4 sm:text-lg">
               <span className="flex h-7 w-7 items-center justify-center border border-brass/50 bg-black/25 text-brass-light">
@@ -413,17 +452,23 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
             </div>
             <SocialLinks />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="order-3 flex w-full items-center justify-between gap-2 border-t border-brass/10 pt-3 sm:order-none sm:w-auto sm:border-0 sm:pt-0">
+            <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-2">
+              <ProjectsDropdown />
+              <a href="/books" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Books</a>
+              <a href="/gallery" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Gallery</a>
+              <a href="/about" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">About</a>
+            </nav>
             <button
+              id="contact"
               type="button"
               aria-haspopup="dialog"
               onClick={() => setContactOpen(true)}
-              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-brass/25 px-3 font-sans text-base font-medium text-parchment/80 transition-colors hover:border-brass/60 hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-brass/25 px-3 font-sans text-base font-medium text-parchment/80 transition-colors hover:border-brass/60 hover:bg-brass/10 hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass sm:text-lg"
             >
               <Mail className="h-[18px] w-[18px] text-brass-light" aria-hidden="true" />
-              <span className="hidden md:inline">Contact Me</span>
+              <span className="hidden sm:inline">Contact Me</span>
             </button>
-            <ProjectsDropdown />
           </div>
         </header>
 
@@ -490,6 +535,8 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       </section>
 
       <ReconCarousel />
+
+      <ArchivePreview />
 
       <section
         id="child-of-destiny"
@@ -585,6 +632,17 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
         </div>
       </section>
 
+      <section id="reader-list" className="relative z-10 border-t border-brass/15 px-5 py-20 sm:px-8 lg:px-12">
+        <motion.div {...reveal} className="mx-auto max-w-4xl text-center">
+          <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-amber">[ Open reader channel ]</p>
+          <h2 className="mt-4 font-display text-3xl sm:text-5xl">Join the Reader List</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-parchment/65 sm:text-lg">Get future book news, development reports, concept art, and occasional extras delivered directly to your inbox.</p>
+          <div className="mt-9 rounded-sm border border-brass/30 bg-black/15 p-5 text-left shadow-xl sm:p-8">
+            <NewsletterSignup />
+          </div>
+        </motion.div>
+      </section>
+
       <dialog
         ref={downloadDialog}
         aria-labelledby="download-title"
@@ -675,9 +733,12 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
           <span>© {new Date().getFullYear()} Carlston Grefalde Archives</span>
           <SocialLinks footer />
           <div className="flex items-center gap-4">
+            <a href="/books" className="hover:text-parchment/70">Books</a>
+            <a href="/gallery" className="hover:text-parchment/70">Gallery</a>
             <a href="/privacy" className="hover:text-parchment/70">
               Privacy
             </a>
+            <a href="/terms" className="hover:text-parchment/70">Terms</a>
             <span>End transmission. Await further orders</span>
           </div>
         </div>
