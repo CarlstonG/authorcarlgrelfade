@@ -58,11 +58,11 @@ export function NewsletterSignup() {
 
   return (
     <>
-      <form onSubmit={submit} className="mx-auto max-w-2xl">
-        <div className="flex flex-col gap-3 sm:flex-row">
+      <form onSubmit={submit} className="mx-auto w-full max-w-2xl">
+        <div className="grid w-full gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
           <label htmlFor={inputId} className="sr-only">Email address</label>
-          <input id={inputId} type="email" autoComplete="email" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Enter your reader email…" className="dispatch-input h-14 min-w-0 flex-1 rounded-sm px-4 text-base focus-visible:outline-2 focus-visible:outline-brass" />
-          <button type="submit" disabled={busy} className="copper-button inline-flex min-h-14 items-center justify-center gap-2 rounded-sm px-6 text-base font-semibold disabled:cursor-wait disabled:opacity-60"><Mail className="h-5 w-5" />{busy ? "JOINING…" : "JOIN THE READER LIST"}</button>
+          <input id={inputId} type="email" autoComplete="email" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Enter your reader email…" className="dispatch-input h-14 w-full min-w-0 rounded-sm px-4 text-base focus-visible:outline-2 focus-visible:outline-brass" />
+          <button type="submit" disabled={busy} className="copper-button inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-sm px-6 text-base font-semibold disabled:cursor-wait disabled:opacity-60 sm:w-auto"><Mail className="h-5 w-5" />{busy ? "JOINING…" : "JOIN THE READER LIST"}</button>
         </div>
         <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true"><label htmlFor={`${inputId}-website`}>Website</label><input id={`${inputId}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" /></div>
         {error && <p role="alert" className="mt-3 text-sm text-red-300">{error}</p>}
