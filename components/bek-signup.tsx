@@ -2,6 +2,7 @@
 
 import { FormEvent, useId, useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackMetaEvent } from "@/components/meta-pixel";
 
 export function BekSignup() {
   const id = useId();
@@ -24,6 +25,9 @@ export function BekSignup() {
       const result = await response.json();
       if (!response.ok || !result.success) {
         throw new Error(result.error || "Please try again in a moment.");
+      }
+      if (result.newSubscriber === true) {
+        trackMetaEvent("CompleteRegistration");
       }
       router.push("/reader-rewards");
     } catch (error) {

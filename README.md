@@ -15,6 +15,10 @@ Run `npm install` and `npm run dev`. Copy `.env.example` to `.env.local`.
 ## Required Kit setup
 Set server-only `KIT_API_KEY` (v4) and `KIT_BEK_FORM_ID`. The form associates readers with BEK; use Kit form automation to add a BEK tag if desired. Never put secrets in public variables.
 
+Set `NEXT_PUBLIC_META_PIXEL_ID` to the Meta dataset ID. The Pixel tracks page views on initial loads and App Router path changes. `CompleteRegistration` is sent only when Kit creates a new subscriber (HTTP 201) and form enrollment also succeeds; existing Kit subscribers still reach Reader Rewards without being counted as new registrations. No email address or other signup data is sent as a Pixel event parameter.
+
+To verify, open Meta Events Manager → Test Events, start a test session for the deployed or locally accessible site, and confirm `PageView` events. Submit a previously unused test email and confirm one `CompleteRegistration`; submit the same address again and confirm it does not produce another registration. Navigating to or refreshing `/reader-rewards` should produce a page view only, never a registration.
+
 Set up a Kit email triggered by the BEK form containing your full website URL followed by /reader-rewards. Choose confirmation settings in Kit; website access does not wait for confirmation. Test actual delivery for new subscribers. Existing form subscribers may not receive the same automation again, but their successful submission still opens rewards immediately.
 
 Suggested subject: Your copy of BEK is ready

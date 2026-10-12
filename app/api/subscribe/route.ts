@@ -27,11 +27,12 @@ export async function POST(request: Request) {
       ...options, signal: AbortSignal.timeout(15000),
     });
     if (!subscriber.ok) throw new Error("Kit subscriber request failed");
+    const newSubscriber = subscriber.status === 201;
     const membership = await fetch(`https://api.kit.com/v4/forms/${form}/subscribers`, {
       ...options, signal: AbortSignal.timeout(15000),
     });
     if (!membership.ok) throw new Error("Kit form request failed");
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, newSubscriber });
   } catch {
     return NextResponse.json({ error: "We couldn’t get your reader pack ready. Please try again." }, { status: 502 });
   }

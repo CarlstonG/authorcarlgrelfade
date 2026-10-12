@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { MetaPixel } from "@/components/meta-pixel";
 import "./globals.css";
 
 const display = Cinzel({
@@ -59,6 +60,7 @@ export default function RootLayout({
             }).replace(/</g, "\\u003c"),
           }}
         />
+        <MetaPixel />
         {children}
         <Analytics />
       </body>
