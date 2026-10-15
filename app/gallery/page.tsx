@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 const galleryItems: GalleryItem[] = [
   { id: "child-cover", title: "The Child of Destiny", category: "Cover File", caption: "Official cover artwork for The Child of Destiny, a short novella from the world of Steel of Machina.", image: "/images/child-of-destiny/cover.jpg", imageAlt: "The Child of Destiny cover", imageFit: "contain", actionUrl: "/child-of-destiny", actionLabel: "GET THE NOVELLA FREE" },
   { id: "bek", title: "Bek // Age 12", category: "Character File", caption: "Coming Soon", image: "/images/child-of-destiny/bek-card.jpg", imageAlt: "Character portrait of Bek" },
+  { id: "dane", title: "Dane", category: "Character File", caption: "Character portrait of Dane.", image: "/images/child-of-destiny/Dane.png", imageAlt: "Illustration of Dane in a green uniform and gray coat", imageFit: "contain" },
   { id: "kingtoad", title: "Kingtoad", category: "Creature Sighting", caption: "Coming Soon", image: "/images/child-of-destiny/kingtoad.jpg", imageAlt: "A Kingtoad emerging from dark water" },
   { id: "plague-mask", title: "Ember Plague Mask", category: "Recovered Relic", caption: "Coming Soon", image: "/images/child-of-destiny/plague-mask.png", imageAlt: "A stitched plague mask with glowing embers", imageFit: "contain" },
   { id: "death-sigil", title: "Machina Death Sigil", category: "Faction Insignia", caption: "Coming Soon", image: "/images/child-of-destiny/skull-gear.png", imageAlt: "A brass gear and animal skull insignia", imageFit: "contain" },

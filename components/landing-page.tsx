@@ -84,6 +84,15 @@ const reconFiles = [
     imageFit: "cover",
   },
   {
+    code: "CHR-01",
+    title: "Dane",
+    subtitle: "Character Portrait",
+    image: "/images/child-of-destiny/Dane.png",
+    imageAlt: "Illustration of Dane in a green uniform and gray coat",
+    imagePosition: "right center",
+    imageFit: "cover",
+  },
+  {
     code: "BST-07",
     title: "Kingtoad",
     subtitle: "Canal Beast Sighting",
