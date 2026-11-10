@@ -233,7 +233,7 @@ function TheUncrownedFeature() {
               duty with honor, and a mock king bound to a deadly secret.
             </p>
             <p>
-              <em>The Uncrowned</em> is the first book in the <em>Steel of Machina</em>
+              <em>The Uncrowned</em> is the first book in the <em>Steel of Machina</em>{" "}
               series. It’s a dark military fantasy and coming-of-age adventure
               with gaslamp and steampunk elements.
             </p>
@@ -419,7 +419,7 @@ function SteelOfMachinaProject() {
               duty with honor, and a mock king bound to a deadly secret.
             </p>
             <p>
-              <em>The Uncrowned</em> is the first book in the <em>Steel of Machina</em>
+              <em>The Uncrowned</em> is the first book in the <em>Steel of Machina</em>{" "}
               series. It’s a dark military fantasy and coming-of-age adventure
               with gaslamp and steampunk elements.
             </p>
