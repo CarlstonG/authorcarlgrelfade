@@ -93,6 +93,15 @@ const reconFiles = [
     imageFit: "cover",
   },
   {
+    code: "CHR-02",
+    title: "Kaen Xorahel",
+    subtitle: "Valen Sentinel // Duty First",
+    image: "/images/child-of-destiny/Kaen.png",
+    imageAlt: "Portrait of Kaen Xorahel, a Sentinel of Valen",
+    imagePosition: "center",
+    imageFit: "contain",
+  },
+  {
     code: "BST-07",
     title: "Kingtoad",
     subtitle: "Canal Beast Sighting",
@@ -185,6 +194,65 @@ function HeroPortrait() {
         className="hero-portrait-image"
       />
     </figure>
+  );
+}
+
+function TheUncrownedFeature() {
+  return (
+    <section className="relative z-10 border-b border-brass/15 px-5 py-14 sm:px-8 sm:py-20 lg:px-12">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <figure className="mx-auto w-full max-w-[440px] overflow-hidden rounded-sm border border-brass/45 bg-black/30 shadow-2xl">
+          <Image
+            src="/images/promo_preorder.jpg"
+            alt="Preorder Steel of Machina, Book One: The Uncrowned, and receive three exclusive character art cards"
+            width={1080}
+            height={1350}
+            sizes="(min-width: 1024px) 32vw, (min-width: 640px) 70vw, calc(100vw - 40px)"
+            priority
+            className="block h-auto w-full"
+          />
+        </figure>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease, delay: 0.1 }}
+        >
+          <p className="mb-5 inline-flex items-center gap-2 border border-amber/35 bg-amber/[0.06] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-amber">
+            Featured novel · Book One
+          </p>
+          <h1 className="max-w-3xl font-display text-4xl font-bold leading-tight text-parchment sm:text-5xl lg:text-6xl">
+            Steel of Machina: <em className="text-brass-light">The Uncrowned</em>
+          </h1>
+          <div className="mt-7 max-w-3xl space-y-5 text-base leading-8 text-parchment/75 sm:text-lg">
+            <p>
+              The Empire’s Dominion wages a ruthless campaign to purge the free
+              nations of the Chastmires of the Viserik Blood Witches and their
+              cult. Three lives are drawn into the conflict: an uncrowned prince
+              who seeks allies at the far end of the world to exact his
+              vengeance, a Hunter Sentinel officer determined to carry out his
+              duty with honor, and a mock king bound to a deadly secret.
+            </p>
+            <p>
+              <em>The Uncrowned</em> is the first book in the <em>Steel of Machina</em>
+              series. It’s a dark military fantasy and coming-of-age adventure
+              with gaslamp and steampunk elements.
+            </p>
+          </div>
+          <a
+            href="#child-of-destiny"
+            onClick={(event) => {
+              event.preventDefault();
+              window.history.pushState(null, "", "#child-of-destiny");
+              scrollToBek();
+            }}
+            className="brass-button group mt-8 inline-flex min-h-14 items-center gap-3 rounded-sm px-6 font-mono text-xs font-bold tracking-[0.12em]"
+          >
+            GET THE FREE COMPANION
+            <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
@@ -293,7 +361,7 @@ function ArchivePreview() {
     <section className="relative z-10 px-5 py-20 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-6 lg:grid-cols-3">
-          <a href="/books" className="iron-frame rounded-sm p-7 transition-transform hover:-translate-y-1">
+          <a href="/steel-of-machina" className="iron-frame rounded-sm p-7 transition-transform hover:-translate-y-1">
             <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-copper-light">Book status</p>
             <h2 className="mt-4 font-display text-2xl">The Uncrowned</h2>
             <p className="mt-4 leading-7 text-parchment/60">Book One of Steel of Machina is in development.</p>
@@ -311,6 +379,51 @@ function ArchivePreview() {
             <p className="mt-4 leading-7 text-parchment/60">Reader reactions will appear here after the next advance-reader campaign.</p>
             <p className="mt-6 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-brass-light">Coming soon</p>
           </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SteelOfMachinaProject() {
+  return (
+    <section
+      id="steel-of-machina"
+      className="relative z-10 scroll-mt-8 border-y border-brass/15 bg-black/15 px-5 py-16 sm:px-8 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <figure className="mx-auto w-full max-w-[440px] overflow-hidden rounded-sm border border-brass/35 bg-black/25 shadow-xl">
+          <Image
+            src="/images/mockup_studio.jpg"
+            alt="Cover reveal mockup for Steel of Machina: Book One, The Uncrowned"
+            width={1080}
+            height={1350}
+            sizes="(min-width: 1024px) 32vw, (min-width: 640px) 70vw, calc(100vw - 40px)"
+            className="block h-auto w-full"
+          />
+        </figure>
+        <div>
+          <p className="mb-5 inline-flex items-center gap-2 border border-amber/35 bg-amber/[0.06] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-amber">
+            Project file · In development
+          </p>
+          <h2 className="max-w-3xl font-display text-4xl font-bold leading-tight text-parchment sm:text-5xl lg:text-6xl">
+            Steel of Machina: <em className="text-brass-light">The Uncrowned</em>
+          </h2>
+          <div className="mt-7 max-w-3xl space-y-5 text-base leading-8 text-parchment/70 sm:text-lg">
+            <p>
+              The Empire’s Dominion wages a ruthless campaign to purge the free
+              nations of the Chastmires of the Viserik Blood Witches and their
+              cult. Three lives are drawn into the conflict: an uncrowned prince
+              who seeks allies at the far end of the world to exact his
+              vengeance, a Hunter Sentinel officer determined to carry out his
+              duty with honor, and a mock king bound to a deadly secret.
+            </p>
+            <p>
+              <em>The Uncrowned</em> is the first book in the <em>Steel of Machina</em>
+              series. It’s a dark military fantasy and coming-of-age adventure
+              with gaslamp and steampunk elements.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -367,17 +480,16 @@ function ProjectsDropdown() {
         hidden={!open}
         className="absolute right-0 top-full mt-2 w-60 rounded-sm border border-brass/35 bg-gunmetal p-2 shadow-xl"
       >
-        <span aria-disabled="true" className="block px-3 py-3 font-sans text-base text-parchment/45">
-          Steel Machina (Soon)
-        </span>
         <a
-          href="#child-of-destiny"
-          onClick={(event) => {
-            event.preventDefault();
-            setOpen(false);
-            window.history.pushState(null, "", "#child-of-destiny");
-            scrollToBek();
-          }}
+          href="/steel-of-machina"
+          onClick={() => setOpen(false)}
+          className="block rounded-sm px-3 py-3 font-sans text-base text-parchment transition-colors hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
+        >
+          Steel of Machina
+        </a>
+        <a
+          href="/child-of-destiny"
+          onClick={() => setOpen(false)}
           className="block rounded-sm px-3 py-3 font-sans text-base text-parchment transition-colors hover:bg-brass/10 focus-visible:outline-2 focus-visible:outline-brass"
         >
           Child of Destiny
@@ -466,7 +578,7 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               <ProjectsDropdown />
               <a href="/books" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Books</a>
               <a href="/gallery" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Gallery</a>
-              <a href="/about" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">About</a>
+              <a href="/about" className="rounded-sm px-2 py-3 text-base font-medium text-parchment/75 hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">About the Author</a>
               <a href="#reader-list" className="rounded-sm px-2 py-3 text-base font-medium text-brass-light hover:bg-brass/10 hover:text-parchment sm:px-3 sm:text-lg">Reader List</a>
             </nav>
             <button
@@ -482,6 +594,8 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
           </div>
         </header>
 
+        <TheUncrownedFeature />
+
         <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-14 py-20 lg:grid-cols-[1.25fr_0.75fr] lg:py-24">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
@@ -492,26 +606,35 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
               <span className="telegraph-dot" />
               Exclusive transmission from the creator
             </div>
-            <h1 className="max-w-5xl font-display text-[clamp(3rem,7.2vw,7.4rem)] font-bold uppercase leading-[0.9] tracking-[-0.045em]">
+            <h2 className="max-w-5xl font-display text-[clamp(3rem,7.2vw,7.4rem)] font-bold uppercase leading-[0.9] tracking-[-0.045em]">
               CARL GRIFF
-            </h1>
+            </h2>
             <p className="mt-4 text-base leading-relaxed text-parchment/70 sm:text-xl">
               a pen name of Carlston Grefalde
             </p>
-            <p className="mt-8 max-w-3xl text-base leading-8 text-parchment/55 sm:text-lg">
-              Carl Griff is the pen name of Carlston Grefalde, a software
-              developer, game developer, father, and lifelong worldbuilder.
-              After years of creating worlds through notebooks, code, and game
-              development, he returned to one of his oldest ambitions: writing
-              fantasy.
-            </p>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-parchment/55 sm:text-lg">
-              He is currently working on his debut novel,{" "}
-              <em className="text-parchment">
-                Steel of Machina: Book One — The Uncrowned
-              </em>
-              .
-            </p>
+            <div className="mt-8 max-w-3xl space-y-4 text-base leading-8 text-parchment/55 sm:text-lg">
+              <p>
+                Carl Griff is a software engineer, game developer, father, and
+                lifelong worldbuilder. After years of creating worlds through
+                notebooks, code, and game development, he returned to one of
+                his oldest ambitions: writing fantasy.
+              </p>
+              <p>
+                With a background in game design, Carl specializes in tight
+                character perspective, spatial awareness, and immersive
+                environments. His fiction aims to place readers inside the
+                character’s exact physical position, the layout of every room,
+                and the brutal weight of every choice.
+              </p>
+              <p>
+                Originally from Dumaguete City, a small Filipino city shaped by
+                Spanish influences, Carl continues to enjoy programming and
+                designing game levels that invite exploration, danger, and
+                discovery. His creative influences include Tite Kubo, John
+                Quinn, and Tuomas Pirinen. In 2010, he was named Programmer of
+                the Year at STI College.
+              </p>
+            </div>
 
             <div className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
               <motion.a
@@ -547,6 +670,8 @@ export function LandingPage({ focusBek = false }: { focusBek?: boolean }) {
       <ReconCarousel />
 
       <ArchivePreview />
+
+      <SteelOfMachinaProject />
 
       <section
         id="child-of-destiny"

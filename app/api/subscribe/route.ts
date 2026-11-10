@@ -1,19 +1,72 @@
 import { NextResponse } from "next/server";
 
+const MAX_BODY_BYTES = 4_000;
+
+function json(body: Record<string, unknown>, status = 200) {
+  return NextResponse.json(body, {
+    status,
+    headers: { "Cache-Control": "no-store" },
+  });
+}
+
 export async function POST(request: Request) {
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+
+  try {
+    if (!origin || !host || new URL(origin).host !== host) {
+      return json({ error: "Request origin is not allowed." }, 403);
+    }
+  } catch {
+    return json({ error: "Request origin is not allowed." }, 403);
+  }
+
+  const contentLength = Number(request.headers.get("content-length") || 0);
+  if (contentLength > MAX_BODY_BYTES) {
+    return json({ error: "Request is too large." }, 413);
+  }
+
   let body: unknown;
-  try { body = await request.json(); }
-  catch { return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 }); }
+  const reader = request.body?.getReader();
+  if (!reader) {
+    return json({ error: "Enter a valid email address." }, 400);
+  }
+
+  try {
+    const chunks: Uint8Array[] = [];
+    let totalBytes = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > MAX_BODY_BYTES) {
+        await reader.cancel();
+        return json({ error: "Request is too large." }, 413);
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    body = JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    return json({ error: "Enter a valid email address." }, 400);
+  } finally {
+    reader.releaseLock();
+  }
 
   const value = body && typeof body === "object" && "email" in body ? body.email : null;
   const email = typeof value === "string" ? value.trim().toLowerCase() : "";
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
+    return json({ error: "Enter a valid email address." }, 400);
   }
   const key = process.env.KIT_API_KEY;
   const form = process.env.KIT_BEK_FORM_ID;
   if (!key || !form || !/^\d+$/.test(form)) {
-    return NextResponse.json({ error: "Reader pack signup is not available yet. Please come back soon." }, { status: 503 });
+    return json({ error: "Reader pack signup is not available yet. Please come back soon." }, 503);
   }
   const options = {
     method: "POST",
@@ -32,8 +85,8 @@ export async function POST(request: Request) {
       ...options, signal: AbortSignal.timeout(15000),
     });
     if (!membership.ok) throw new Error("Kit form request failed");
-    return NextResponse.json({ success: true, newSubscriber });
+    return json({ success: true, newSubscriber });
   } catch {
-    return NextResponse.json({ error: "We couldn’t get your reader pack ready. Please try again." }, { status: 502 });
+    return json({ error: "We couldn’t get your reader pack ready. Please try again." }, 502);
   }
 }

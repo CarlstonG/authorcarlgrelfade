@@ -1,10 +1,9 @@
 import { Facebook, Instagram } from "lucide-react";
 
 const navLinks = [
-  { href: "/", label: "Home" },
   { href: "/books", label: "Books" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "About the Author" },
   { href: "/#reader-list", label: "Reader List" },
 ];
 
